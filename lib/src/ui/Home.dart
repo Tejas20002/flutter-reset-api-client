@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pope/src/ui/response/respose.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -7,45 +8,48 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController? phb;
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _urlController = TextEditingController();
 
   @override
   void initState() {
-    phb = TabController(length: 3, vsync: this);
     super.initState();
+    phb = TabController(length: 3, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('RESET API Client'),
+        bottom: TabBar(
+          controller: phb,
+          tabs: [
+            Tab(
+              text: 'Params',
+            ),
+            Tab(
+              text: 'Header',
+            ),
+            Tab(
+              text: 'Body',
+            )
+          ],
+        ),
       ),
       body: Column(
         children: [
-          TabBar(
-            controller: phb,
-            tabs: [
-              Tab(
-                text: 'Params',
-              ),
-              Tab(
-                text: 'Header',
-              ),
-              Tab(
-                text: 'Body',
-              )
-            ],
-          ),
-          TabBarView(
-            children: [
-              Text("Params"),
-              Text("Header"),
-              Text("Body"),
-            ],
-            controller: phb,
+          Flexible(
+            child: TabBarView(
+              controller: phb,
+              children: const [
+                Text("Params"),
+                Text("Header"),
+                Text("Body"),
+              ],
+            ),
           )
         ],
       ),
@@ -67,14 +71,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             children: [
               Column(
                 children: [
-                  TextField(
-                    controller: _textEditingController,
-                    decoration: InputDecoration(
-                      labelText: 'Url',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
+                  _urlTextField(context),
+
                 ],
               ),
             ],
@@ -83,6 +81,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
+  Widget _urlTextField(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: TextField(
+      controller: _urlController,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'URL',
+        suffix: IconButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Ressponse(),));
+          debugPrint(_urlController.text);
+        }, icon: Icon(Icons.send))
+      ),
+    ),
+  );
 
   InkWell _containerButton({String? text, required Function method}) {
     return InkWell(
@@ -99,7 +111,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         padding: EdgeInsets.all(10),
         child: Text(
           text!,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.indigo,
             fontSize: 20,
           ),

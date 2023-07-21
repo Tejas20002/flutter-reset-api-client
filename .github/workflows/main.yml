@@ -24,12 +24,17 @@ jobs:
 
     - name: Build APK
       run: flutter build apk --release
-
+    
+    - name: Build Release APK
+      run: |
+        bash ./gradlew assembleRelease
+        zip -r app_release.zip build/app/outputs/flutter-apk/
+        
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
         name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: ${{ github.workspace }}/app_release.zip
 
   send_to_telegram:
     name: Send APK to Telegram Group
@@ -52,4 +57,4 @@ jobs:
             Commited Actor: ${{ github.actor }}
             Build Info: https://github.com/${{github.repository}}/commit/${{github.sha}}/checks
             Build Status: ${{ job.status }}
-        document: ${{ github.workspace }}/build/app/outputs/flutter-apk/app-release.apk
+        document: ${{ github.workspace }}/app_release.zip

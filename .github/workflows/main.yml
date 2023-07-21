@@ -20,10 +20,14 @@ jobs:
         flutter-version: '3.10.5' # Replace with your desired Flutter version
 
     - name: Get dependencies
-      run: flutter pub get
+      run: |
+        flutter pub get
+        flutter clean
+        sed -i "s/^org.gradle.java.home.*//" android/gradle.properties
+        flutter doctor --android-licenses
 
     - name: Build APK
-      run: flutter build apk --release
+      run: flutter build apk --release --no-sound-null-safety
     
     - name: Build Release APK
       run: zip -r app_release.zip build/app/outputs/flutter-apk/

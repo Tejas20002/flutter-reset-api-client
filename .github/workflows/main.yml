@@ -26,9 +26,7 @@ jobs:
       run: flutter build apk --release
     
     - name: Build Release APK
-      run: |
-        bash ./gradlew assembleRelease
-        zip -r app_release.zip build/app/outputs/flutter-apk/
+      run: zip -r app_release.zip build/app/outputs/flutter-apk/
         
     - name: Upload APK
       uses: actions/upload-artifact@v2

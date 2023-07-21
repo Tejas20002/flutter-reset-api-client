@@ -29,7 +29,6 @@ jobs:
         flutter pub get
         flutter clean
         sed -i "s/^org.gradle.java.home.*//" android/gradle.properties
-        flutter doctor --android-licenses
 
     - name: Build APK
       run: flutter build apk --release --no-sound-null-safety

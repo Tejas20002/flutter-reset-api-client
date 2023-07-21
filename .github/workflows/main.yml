@@ -31,7 +31,7 @@ jobs:
         sed -i "s/^org.gradle.java.home.*//" android/gradle.properties
 
     - name: Build APK
-      run: flutter build apk --release --no-sound-null-safety
+      run: flutter build apk --release
     
     - name: Build Release APK
       run: zip -r app_release.zip build/app/outputs/flutter-apk/

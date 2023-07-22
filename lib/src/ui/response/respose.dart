@@ -23,6 +23,7 @@ class _RessponseState extends State<Ressponse> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('RESET API Client'),
+        backgroundColor: Colors.indigo,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,33 +33,39 @@ class _RessponseState extends State<Ressponse> {
             children: [
               Row(
                 children: [
-                  Text(
-                    'Response Status: ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    child: Text(
+                      'Response Status: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                   Text(
                     '200', // Dynamic
                     style: TextStyle(
                       color: Color(0xFF31D023),
-                      fontSize: 18,
+                      fontSize: 20,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
               ),
-              Text(
-                'Response Details: ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                child: Text(
+                  'Response Details: ',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               Container(
@@ -69,7 +76,13 @@ class _RessponseState extends State<Ressponse> {
                   color: Colors.grey.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8)
                 ),
-                child: Text(prettyString!),
+                child: Text(
+                    prettyString!,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
               )
             ],
           ),

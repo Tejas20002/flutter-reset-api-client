@@ -11,11 +11,32 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController? phb;
   final TextEditingController _urlController = TextEditingController();
+  List<String> tabs = ['Params', 'Header', 'Body'];
+  List<TextEditingController> _key = [];
+  List<TextEditingController> _value = [];
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     phb = TabController(length: 3, vsync: this);
+  }
+
+  // Add the form field
+  _addField(){
+    setState(() {
+      _key.add(TextEditingController());
+      _value.add(TextEditingController());
+    });
+  }
+
+  // Remove the form field
+  _removeField(i){
+    setState(() {
+      _key.removeAt(i);
+      _value.removeAt(i);
+    });
   }
 
   @override
@@ -24,19 +45,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('RESET API Client'),
+        backgroundColor: Colors.indigo,
         bottom: TabBar(
           controller: phb,
-          tabs: [
-            Tab(
-              text: 'Params',
-            ),
-            Tab(
-              text: 'Header',
-            ),
-            Tab(
-              text: 'Body',
-            )
-          ],
+          tabs: tabs.map((tab) => Tab(
+              text: tab,
+          )).toList(),
         ),
       ),
       body: Column(
@@ -82,19 +96,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
   Widget _urlTextField(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: TextField(
-      controller: _urlController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'URL',
-        suffix: IconButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Ressponse(),));
-          debugPrint(_urlController.text);
-        }, icon: Icon(Icons.send))
-      ),
-    ),
-  );
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom
+        ),
+        child: TextFormField(
+          controller: _urlController,
+          style: TextStyle(
+            fontSize: 24,
+          ),
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hoverColor: Colors.indigo,
+              labelText: 'URL',
+              suffix: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Ressponse(),
+                        ));
+                    debugPrint(_urlController.text);
+                  },
+                  icon: Icon(Icons.send))),
+        ),
+      );
 
   InkWell _containerButton({String? text, required Function method}) {
     return InkWell(
@@ -113,7 +138,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           text!,
           style: const TextStyle(
             color: Colors.indigo,
-            fontSize: 20,
+            fontSize: 14,
+            fontWeight: FontWeight.bold
           ),
         ),
       ),

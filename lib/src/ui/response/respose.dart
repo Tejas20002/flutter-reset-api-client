@@ -31,10 +31,10 @@ class _RessponseState extends State<Ressponse> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
                     child: Text(
                       'Response Status: ',
                       style: TextStyle(
@@ -56,8 +56,8 @@ class _RessponseState extends State<Ressponse> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
                 child: Text(
                   'Response Details: ',
                   style: TextStyle(
@@ -78,7 +78,7 @@ class _RessponseState extends State<Ressponse> {
                 ),
                 child: Text(
                     prettyString!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold
                   ),

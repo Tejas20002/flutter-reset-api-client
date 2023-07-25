@@ -59,9 +59,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: phb,
               children: const [
-                Text("Params"),
-                Text("Header"),
-                Text("Body"),
+                Center(
+                  child: Text(
+                    "Params",
+                  style: TextStyle(
+                    fontSize: 30,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "Header",
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "Body",
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
               ],
             ),
           )
@@ -101,7 +122,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ),
         child: TextFormField(
           controller: _urlController,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
           ),
           decoration: InputDecoration(

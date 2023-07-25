@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pope/src/ui/response/respose.dart';
+import '../api/api_client.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -107,7 +108,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               Column(
                 children: [
                   _urlTextField(context),
-
                 ],
               ),
             ],
@@ -130,13 +130,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               hoverColor: Colors.indigo,
               labelText: 'URL',
               suffix: IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    debugPrint(_urlController.text);
+                    String data = await APIClient.get(_urlController.text);
+                    debugPrint("data: $data");
+                    // ignore: use_build_context_synchronously
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Ressponse(),
+                          builder: (context) => Ressponse(data: data),
                         ));
-                    debugPrint(_urlController.text);
                   },
                   icon: Icon(Icons.send))),
         ),

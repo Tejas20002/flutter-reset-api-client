@@ -1,17 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pope/src/model/responseModel.dart';
 
 class Ressponse extends StatefulWidget {
-  const Ressponse({super.key});
-
+  String? data;
+  Ressponse({required this.data});
   @override
   State<Ressponse> createState() => _RessponseState();
 }
 
 class _RessponseState extends State<Ressponse> {
-  String yourJson = '{"bet_histories":[{"point":5,"bet_type":"Close","jodi_digit":"00"},{"point":5,"bet_type":"Close","jodi_digit":"99"},{"point":5,"bet_type":"Close","jodi_digit":"88"},{"point":5,"bet_type":"Close","jodi_digit":"77"},{"point":5,"bet_type":"Close","jodi_digit":"66"}]}';
-  String? prettyString;
+  String yourJson = '{}';
+  dynamic prettyString;
   @override
   void initState() {
     super.initState();
@@ -70,14 +71,14 @@ class _RessponseState extends State<Ressponse> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8)
                 ),
                 child: Text(
-                    prettyString!,
+                    '${widget.data}',
+                    // prettyString!,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold

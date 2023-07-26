@@ -1,6 +1,7 @@
 class ResponseData {
   String body;
-  // final String code;
+  int code;
+  String header;
 
-  ResponseData(this.body);
+  ResponseData(this.code, this.body, this.header);
 }

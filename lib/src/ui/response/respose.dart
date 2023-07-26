@@ -1,23 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:pope/src/model/responseModel.dart';
 
 class Ressponse extends StatefulWidget {
-  String? data;
+  var data;
   Ressponse({required this.data});
   @override
   State<Ressponse> createState() => _RessponseState();
 }
 
 class _RessponseState extends State<Ressponse> {
-  String yourJson = '{}';
-  dynamic prettyString;
+  // String yourJson = '{}';
+  // String? prettyString;
   @override
   void initState() {
     super.initState();
-    final object = json.decode(yourJson);
-    prettyString = JsonEncoder.withIndent('  ').convert(object);
+    // final object = json.decode(yourJson);
+    // prettyString = JsonEncoder.withIndent('  ').convert(object);
   }
   @override
   Widget build(BuildContext context) {
@@ -32,9 +31,9 @@ class _RessponseState extends State<Ressponse> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+               Row(
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
                     child: Text(
                       'Response Status: ',
@@ -47,15 +46,43 @@ class _RessponseState extends State<Ressponse> {
                     ),
                   ),
                   Text(
-                    '200', // Dynamic
+                      '${widget.data.code}', // Dynamic
                     style: TextStyle(
-                      color: Color(0xFF31D023),
+                      color: widget.data.code == 200 ? Colors.green : Colors.red,
                       fontSize: 20,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                child: Text(
+                  'Response Headers: ',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8)
+                ),
+                child: Text(
+                  '${widget.data.header}',
+                  // prettyString!,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
@@ -77,7 +104,7 @@ class _RessponseState extends State<Ressponse> {
                   borderRadius: BorderRadius.circular(8)
                 ),
                 child: Text(
-                    '${widget.data}',
+                    '${widget.data.body}',
                     // prettyString!,
                   style: const TextStyle(
                     fontSize: 18,

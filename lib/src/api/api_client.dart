@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:pope/src/model/responseModel.dart';
 
 class APIClient {
-  static Future<dynamic> get(String endpoint) async {
+  static Future<ResponseData> get(String endpoint) async {
     final url = '$endpoint';
     String jsonData = '';
+    String jsonDataHeader = '';
     try {
       // Make the API request.
       final response = await http.get(Uri.parse(url));
@@ -14,15 +16,18 @@ class APIClient {
         final parsedJson = json.decode(response.body);
         final jsonString = JsonEncoder.withIndent('  ').convert(parsedJson);
         jsonData = jsonString;
-        return jsonData;
+        final parsedJsonHeader = response.headers;
+        final jsonStringHeader = JsonEncoder.withIndent('  ').convert(parsedJsonHeader);
+        jsonDataHeader = jsonStringHeader;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
       } else {
         jsonData = 'Failed to fetch data. Status code: ${response.statusCode}';
-        return jsonData;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
       }
     } catch (e) {
       // If an error occurs during the API call, show an error message.
       jsonData = 'Error: $e';
-      return jsonData;
+      return ResponseData(404, jsonData, "");
     }
   }
 

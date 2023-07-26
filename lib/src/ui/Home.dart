@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pope/src/model/responseModel.dart';
 import 'package:pope/src/ui/response/respose.dart';
 import '../api/api_client.dart';
 
@@ -126,14 +127,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             fontSize: 24,
           ),
           decoration: InputDecoration(
+
               border: OutlineInputBorder(),
               hoverColor: Colors.indigo,
               labelText: 'URL',
               suffix: IconButton(
                   onPressed: () async {
                     debugPrint(_urlController.text);
-                    String data = await APIClient.get(_urlController.text);
-                    debugPrint("data: $data");
+                    var data = await APIClient.get(_urlController.text);
+                    debugPrint("data: ${data}");
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                         context,
@@ -156,13 +158,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
           borderRadius: BorderRadius.circular(4),
         ),
-        margin: EdgeInsets.all(14),
+        margin: EdgeInsets.all(10),
         padding: EdgeInsets.all(10),
         child: Text(
           text!,
           style: const TextStyle(
             color: Colors.indigo,
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.bold
           ),
         ),

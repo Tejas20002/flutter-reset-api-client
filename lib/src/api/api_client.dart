@@ -31,7 +31,7 @@ class APIClient {
     }
   }
 
-  static Future<dynamic> post(String endpoint, dynamic body) async {
+  static Future<ResponseData> post(String endpoint, dynamic body) async {
     final url = '$endpoint';
     final headers = {'Content-Type': 'application/json'};
     final jsonBody = jsonEncode(body);
@@ -39,8 +39,9 @@ class APIClient {
     final response = await http.post(Uri.parse(url), headers: headers, body: jsonBody);
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return ResponseData(response.statusCode, response.body, "");
     } else {
+      return ResponseData(response.statusCode, response.body, "");
       throw Exception('Failed to make a POST request');
     }
   }

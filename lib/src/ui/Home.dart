@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pope/src/model/responseModel.dart';
 import 'package:pope/src/ui/response/respose.dart';
 import '../api/api_client.dart';
 
@@ -12,12 +11,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController? phb;
+  String? method;
   final TextEditingController _urlController = TextEditingController();
-  List<String> tabs = ['Params', 'Header', 'Body'];
+  TextEditingController _keys = TextEditingController();
+  TextEditingController _values = TextEditingController();
   List<TextEditingController> _key = [];
   List<TextEditingController> _value = [];
-
-  final _formKey = GlobalKey<FormState>();
+  int _counter = 1;
 
   @override
   void initState() {
@@ -34,11 +34,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   // Remove the form field
-  _removeField(i){
-    setState(() {
-      _key.removeAt(i);
-      _value.removeAt(i);
-    });
+  _removeField() {
+    if (_key.length > 1) {
+      setState(() {
+        _key.removeAt(_key.length - 1);
+        _value.removeAt(_value.length - 1);
+      });
+    }
   }
 
   @override
@@ -50,9 +52,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         backgroundColor: Colors.indigo,
         bottom: TabBar(
           controller: phb,
-          tabs: tabs.map((tab) => Tab(
-              text: tab,
-          )).toList(),
+          tabs: [
+            Tab(
+              text: 'Params',
+            ),
+            Tab(
+              text: 'Header',
+            ),
+            Tab(
+              text: 'Body',
+            )
+          ],
         ),
       ),
       body: Column(
@@ -60,16 +70,42 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Flexible(
             child: TabBarView(
               controller: phb,
-              children: const [
-                Center(
-                  child: Text(
-                    "Params",
-                  style: TextStyle(
-                    fontSize: 30,
+              children: [
+                // for(int i = 0; i < _key.length; i++)
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _keys,
+                          decoration: const InputDecoration(
+                              labelText: 'Key',
+                              border: OutlineInputBorder(),
+                          ),
+                        ),
+                        TextField(
+                          controller: _values,
+                          decoration: const InputDecoration(
+                            labelText: 'Value',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () => _addField(),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () => _removeField(),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                Center(
+                const Center(
                   child: Text(
                     "Header",
                     style: TextStyle(
@@ -77,7 +113,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ),
                   ),
                 ),
-                Center(
+                const Center(
                   child: Text(
                     "Body",
                     style: TextStyle(
@@ -96,11 +132,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Wrap(
             direction: Axis.horizontal,
             children: [
-              _containerButton(text: "GET", method: () {}),
-              _containerButton(text: "POST", method: () {}),
-              _containerButton(text: "PUT", method: () {}),
-              _containerButton(text: "PATCH", method: () {}),
-              _containerButton(text: "DELETE", method: () {}),
+              _containerButton(text: "GET", method: () {
+                setState(() {
+                  method = "GET";
+                });
+              }),
+              _containerButton(text: "POST", method: () {
+                setState(() {
+                  method = "POST";
+                });
+              }),
+              _containerButton(text: "PUT", method: () {
+                setState(() {
+                  method = "PUT";
+                });
+              }),
+              _containerButton(text: "PATCH", method: () {
+                setState(() {
+                  method = "PATCH";
+                });
+              }),
+              _containerButton(text: "DELETE", method: () {
+                setState(() {
+                  method = "DELETE";
+                });
+              }),
             ],
           ),
           Wrap(
@@ -127,15 +183,33 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             fontSize: 24,
           ),
           decoration: InputDecoration(
-
               border: OutlineInputBorder(),
               hoverColor: Colors.indigo,
               labelText: 'URL',
               suffix: IconButton(
                   onPressed: () async {
                     debugPrint(_urlController.text);
-                    var data = await APIClient.get(_urlController.text);
-                    debugPrint("data: ${data}");
+                    var data;
+                    // var data = await APIClient.get(_urlController.text);
+                    // debugPrint("data: ${data}");
+                    switch(method){
+                      case 'GET':
+                        data = await APIClient.get("${_urlController.text}?${_keys.text}=${_values.text}");
+                        debugPrint(method);
+                        break;
+                      case 'POST':
+                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", "");
+                        break;
+                      case 'PUT':
+                        debugPrint(method);
+                        break;
+                      case 'PATCH':
+                        debugPrint(method);
+                        break;
+                      default:
+                        debugPrint(method);
+                        break;
+                    }
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                         context,
@@ -149,7 +223,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   InkWell _containerButton({String? text, required Function method}) {
     return InkWell(
-      onTap: method(),
+      onTap: (){
+        method();
+        },
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(

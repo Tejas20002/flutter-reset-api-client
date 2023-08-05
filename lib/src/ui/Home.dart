@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pope/src/ui/response/respose.dart';
 import '../api/api_client.dart';
@@ -74,33 +76,117 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 // for(int i = 0; i < _key.length; i++)
                   Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        TextField(
-                          controller: _keys,
-                          decoration: const InputDecoration(
-                              labelText: 'Key',
-                              border: OutlineInputBorder(),
+                    child: Row(
+                      mainAxisAlignment:MainAxisAlignment.spaceAround,
+                      crossAxisAlignment:CrossAxisAlignment.start,
+                      mainAxisSize:MainAxisSize.max,
+                      children:[
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            controller: _keys,
+                            obscureText:false,
+                            textAlign:TextAlign.start,
+                            maxLines:1,
+                            style:TextStyle(
+                              fontWeight:FontWeight.w400,
+                              fontStyle:FontStyle.normal,
+                              fontSize:14,
+                              color:Color(0xff000000),
+                            ),
+                            decoration:InputDecoration(
+                              disabledBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              focusedBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              enabledBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              hintText:"Key",
+                              hintStyle:TextStyle(
+                                fontWeight:FontWeight.w400,
+                                fontStyle:FontStyle.normal,
+                                fontSize:14,
+                                color:Color(0xff000000),
+                              ),
+                              filled:true,
+                              fillColor:Color(0xfff2f2f3),
+                              isDense:false,
+                              contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            ),
                           ),
                         ),
-                        TextField(
-                          controller: _values,
-                          decoration: const InputDecoration(
-                            labelText: 'Value',
-                            border: OutlineInputBorder(),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            controller: _values,
+                            obscureText:false,
+                            textAlign:TextAlign.start,
+                            maxLines:1,
+                            style:TextStyle(
+                              fontWeight:FontWeight.w400,
+                              fontStyle:FontStyle.normal,
+                              fontSize:14,
+                              color:Color(0xff000000),
+                            ),
+                            decoration:InputDecoration(
+                              disabledBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              focusedBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              enabledBorder:OutlineInputBorder(
+                                borderRadius:BorderRadius.circular(4.0),
+                                borderSide:BorderSide(
+                                    color:Color(0xff000000),
+                                    width:1
+                                ),
+                              ),
+                              hintText:"Value",
+                              hintStyle:TextStyle(
+                                fontWeight:FontWeight.w400,
+                                fontStyle:FontStyle.normal,
+                                fontSize:14,
+                                color:Color(0xff000000),
+                              ),
+                              filled:true,
+                              fillColor:Color(0xfff2f2f3),
+                              isDense:false,
+                              contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            ),
                           ),
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () => _addField(),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () => _removeField(),
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                          child: IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Color(0xff212435),
+                            iconSize: 24,
+                            onPressed: () {  },
+                          ),
                         ),
                       ],
                     ),
@@ -198,7 +284,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         debugPrint(method);
                         break;
                       case 'POST':
-                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", "");
+                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", "" as Map<String, String>?, "", "" as Encoding?);
                         break;
                       case 'PUT':
                         debugPrint(method);

@@ -31,60 +31,122 @@ class APIClient {
     }
   }
 
-  static Future<ResponseData> post(String endpoint, dynamic body) async {
+  static Future<ResponseData> post(String endpoint, Map<String, String>? headers,Object? body, Encoding? encoding) async {
     final url = '$endpoint';
-    final headers = {'Content-Type': 'application/json'};
     final jsonBody = jsonEncode(body);
+    String jsonData = '';
+    String jsonDataHeader = '';
+    try {
+      // Make the API request.
+      final response = await http.post(Uri.parse(url), headers: headers, body: jsonBody);
 
-    final response = await http.post(Uri.parse(url), headers: headers, body: jsonBody);
-
-    if (response.statusCode == 200) {
-      return ResponseData(response.statusCode, response.body, "");
-    } else {
-      return ResponseData(response.statusCode, response.body, "");
-      throw Exception('Failed to make a POST request');
+      // Check if the API call was successful.
+      if (response.statusCode == 200) {
+        final parsedJson = json.decode(response.body);
+        final jsonString = JsonEncoder.withIndent('  ').convert(parsedJson);
+        jsonData = jsonString;
+        final parsedJsonHeader = response.headers;
+        final jsonStringHeader = JsonEncoder.withIndent('  ').convert(parsedJsonHeader);
+        jsonDataHeader = jsonStringHeader;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      } else {
+        jsonData = 'Failed to fetch data. Status code: ${response.statusCode}';
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      }
+    } catch (e) {
+      // If an error occurs during the API call, show an error message.
+      jsonData = 'Error: $e';
+      return ResponseData(404, jsonData, "");
     }
   }
 
-  static Future<dynamic> patch(String endpoint, dynamic body) async {
+  static Future<ResponseData> patch(String endpoint, Map<String, String>? headers,Object? body, Encoding? encoding) async {
     final url = '$endpoint';
-    final headers = {'Content-Type': 'application/json'};
     final jsonBody = jsonEncode(body);
+    String jsonData = '';
+    String jsonDataHeader = '';
 
-    final response = await http.patch(Uri.parse(url), headers: headers, body: jsonBody);
+    try {
+      // Make the API request.
+      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonBody);
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to make a PATCH request');
+      // Check if the API call was successful.
+      if (response.statusCode == 200) {
+        final parsedJson = json.decode(response.body);
+        final jsonString = JsonEncoder.withIndent('  ').convert(parsedJson);
+        jsonData = jsonString;
+        final parsedJsonHeader = response.headers;
+        final jsonStringHeader = JsonEncoder.withIndent('  ').convert(parsedJsonHeader);
+        jsonDataHeader = jsonStringHeader;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      } else {
+        jsonData = 'Failed to fetch data. Status code: ${response.statusCode}';
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      }
+    } catch (e) {
+      // If an error occurs during the API call, show an error message.
+      jsonData = 'Error: $e';
+      return ResponseData(404, jsonData, "");
     }
   }
 
-  static Future<dynamic> put(String endpoint, dynamic body) async {
+  static Future<ResponseData> put(String endpoint, Map<String, String>? headers,Object? body, Encoding? encoding) async {
     final url = '$endpoint';
-    final headers = {'Content-Type': 'application/json'};
     final jsonBody = jsonEncode(body);
+    String jsonData = '';
+    String jsonDataHeader = '';
 
-    final response = await http.put(Uri.parse(url), headers: headers, body: jsonBody);
+    try {
+      // Make the API request.
+      final response = await http.put(Uri.parse(url), headers: headers, body: jsonBody);
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to make a PUT request');
+      // Check if the API call was successful.
+      if (response.statusCode == 200) {
+        final parsedJson = json.decode(response.body);
+        final jsonString = JsonEncoder.withIndent('  ').convert(parsedJson);
+        jsonData = jsonString;
+        final parsedJsonHeader = response.headers;
+        final jsonStringHeader = JsonEncoder.withIndent('  ').convert(parsedJsonHeader);
+        jsonDataHeader = jsonStringHeader;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      } else {
+        jsonData = 'Failed to fetch data. Status code: ${response.statusCode}';
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      }
+    } catch (e) {
+      // If an error occurs during the API call, show an error message.
+      jsonData = 'Error: $e';
+      return ResponseData(404, jsonData, "");
     }
   }
 
-  static Future<dynamic> delete(String endpoint, dynamic body) async {
+  static Future<ResponseData> delete(String endpoint, Map<String, String>? headers,Object? body, Encoding? encoding) async {
     final url = '$endpoint';
-    final headers = {'Content-Type': 'application/json'};
     final jsonBody = jsonEncode(body);
+    String jsonData = '';
+    String jsonDataHeader = '';
 
-    final response = await http.delete(Uri.parse(url), headers: headers, body: jsonBody);
+    try {
+      // Make the API request.
+      final response = await http.delete(Uri.parse(url), headers: headers, body: jsonBody);
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to make a DELETE request');
+      // Check if the API call was successful.
+      if (response.statusCode == 200) {
+        final parsedJson = json.decode(response.body);
+        final jsonString = JsonEncoder.withIndent('  ').convert(parsedJson);
+        jsonData = jsonString;
+        final parsedJsonHeader = response.headers;
+        final jsonStringHeader = JsonEncoder.withIndent('  ').convert(parsedJsonHeader);
+        jsonDataHeader = jsonStringHeader;
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      } else {
+        jsonData = 'Failed to fetch data. Status code: ${response.statusCode}';
+        return ResponseData(response.statusCode, jsonData, jsonDataHeader);
+      }
+    } catch (e) {
+      // If an error occurs during the API call, show an error message.
+      jsonData = 'Error: $e';
+      return ResponseData(404, jsonData, "");
     }
   }
 }

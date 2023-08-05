@@ -13,8 +13,6 @@ class _RessponseState extends State<Ressponse> {
   @override
   void initState() {
     super.initState();
-    // final object = json.decode(yourJson);
-    // prettyString = JsonEncoder.withIndent('  ').convert(object);
   }
   @override
   Widget build(BuildContext context) {

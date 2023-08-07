@@ -36,11 +36,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   // Remove the form field
-  _removeField() {
+  _removeField(int i) {
     if (_key.length > 1) {
       setState(() {
-        _key.removeAt(_key.length - 1);
-        _value.removeAt(_value.length - 1);
+        _key.removeAt(i);
+        _value.removeAt(i);
       });
     }
   }
@@ -284,15 +284,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         debugPrint(method);
                         break;
                       case 'POST':
-                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", "" as Map<String, String>?, "", "" as Encoding?);
+                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
                         break;
                       case 'PUT':
+                        data = await APIClient.put("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
                         debugPrint(method);
                         break;
                       case 'PATCH':
+                        data = await APIClient.patch("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
                         debugPrint(method);
                         break;
                       default:
+                        data = await APIClient.delete("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
                         debugPrint(method);
                         break;
                     }

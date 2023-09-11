@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pope/src/ui/response/respose.dart';
 import '../api/api_client.dart';
@@ -19,8 +17,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TextEditingController _values = TextEditingController();
   List<TextEditingController> _key = [];
   List<TextEditingController> _value = [];
-  int _counter = 1;
-
   @override
   void initState() {
     super.initState();
@@ -51,10 +47,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('RESET API Client'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.orange,
         bottom: TabBar(
           controller: phb,
-          tabs: [
+          tabs: const [
             Tab(
               text: 'Params',
             ),
@@ -221,27 +217,32 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               _containerButton(text: "GET", method: () {
                 setState(() {
                   method = "GET";
+                  debugPrint(method);
                 });
               }),
               _containerButton(text: "POST", method: () {
                 setState(() {
                   method = "POST";
+                  debugPrint(method);
                 });
               }),
               _containerButton(text: "PUT", method: () {
                 setState(() {
                   method = "PUT";
+                  debugPrint(method);
                 });
               }),
               _containerButton(text: "PATCH", method: () {
                 setState(() {
                   method = "PATCH";
+                  debugPrint(method);
                 });
               }),
               _containerButton(text: "DELETE", method: () {
                 setState(() {
                   method = "DELETE";
                 });
+                debugPrint(method);
               }),
             ],
           ),
@@ -270,7 +271,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
           decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hoverColor: Colors.indigo,
+              hoverColor: Colors.orange,
               labelText: 'URL',
               suffix: IconButton(
                   onPressed: () async {
@@ -318,7 +319,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.indigo,
+            color: Colors.orange,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(4),
@@ -328,7 +329,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         child: Text(
           text!,
           style: const TextStyle(
-            color: Colors.indigo,
+            color: Colors.orange,
             fontSize: 12,
             fontWeight: FontWeight.bold
           ),

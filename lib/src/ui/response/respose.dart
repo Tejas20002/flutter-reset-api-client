@@ -19,7 +19,7 @@ class _RessponseState extends State<Ressponse> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('RESET API Client'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.orange,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -94,19 +94,26 @@ class _RessponseState extends State<Ressponse> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
+                height: 300,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8)
                 ),
-                child: Text(
-                    '${widget.data.body}',
-                    // prettyString!,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
+                child: SingleChildScrollView(
+                  child: Text(
+                      '${widget.data.body}',
+                      // prettyString!,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
+              ),
+              ElevatedButton(
+                  onPressed: (){},
+                  child: Text("Save"),
               )
             ],
           ),

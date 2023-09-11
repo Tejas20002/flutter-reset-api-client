@@ -20,7 +20,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.indigo,
+      backgroundColor: Colors.orange,
       body: Center(
         child: Text(
           "RESET API CLIENT",

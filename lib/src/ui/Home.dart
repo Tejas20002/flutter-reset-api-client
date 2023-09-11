@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pope/src/ui/history/history.dart';
 import 'package:pope/src/ui/response/respose.dart';
 import '../api/api_client.dart';
 
@@ -62,6 +63,27 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             )
           ],
         ),
+        actions: [
+          PopupMenuButton(
+              itemBuilder: (context){
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("History"),
+                  ),
+                ];
+              },
+              onSelected:(value){
+                if(value == 0){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => History(),
+                      ));
+                }
+              }
+          ),
+        ],
       ),
       body: Column(
         children: [

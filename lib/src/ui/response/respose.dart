@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pope/src/ui/history/history.dart';
 
 class Ressponse extends StatefulWidget {
   var data;
@@ -20,6 +21,27 @@ class _RessponseState extends State<Ressponse> {
       appBar: AppBar(
         title: const Text('RESET API Client'),
         backgroundColor: Colors.orange,
+        actions: [
+          PopupMenuButton(
+              itemBuilder: (context){
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("History"),
+                  ),
+                ];
+              },
+              onSelected:(value){
+                if(value == 0){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => History(),
+                      ));
+                }
+              }
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -112,7 +134,13 @@ class _RessponseState extends State<Ressponse> {
                 ),
               ),
               ElevatedButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const History(),
+                        ));
+                  },
                   child: Text("Save"),
               )
             ],

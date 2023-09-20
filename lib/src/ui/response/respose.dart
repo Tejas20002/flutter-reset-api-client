@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pope/src/ui/history/history.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Ressponse extends StatefulWidget {
   var data;
@@ -135,6 +139,14 @@ class _RessponseState extends State<Ressponse> {
               ),
               ElevatedButton(
                   onPressed: (){
+                    FirebaseFirestore.instance
+                        .collection('record')
+                        .add({
+                      'details': widget.data.body,
+                      'headers': widget.data.header,
+                      'status': widget.data.code
+                    }).then((value) => print("User Added"))
+                        .catchError((error) => print("Failed to add user: $error"));
                     Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -326,7 +326,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Ressponse(data: data),
+                          builder: (context) => Ressponse(data: data, url: _urlController.text, method: method),
                         ));
                   },
                   icon: Icon(Icons.send))),

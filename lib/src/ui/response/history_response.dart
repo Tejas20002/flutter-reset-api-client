@@ -1,24 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pope/src/ui/history/history.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-class Ressponse extends StatefulWidget {
-  var data, url, method;
-  Ressponse({required this.data, required this.url, required this.method});
+class HistoryResponse extends StatefulWidget {
+  var data, status, headers, url, method;
+  HistoryResponse({super.key, required this.data, required this.status, required this.headers, required this.url, required this.method});
+
   @override
-  State<Ressponse> createState() => _RessponseState();
+  State<HistoryResponse> createState() => _HistoryResponseState();
 }
 
-class _RessponseState extends State<Ressponse> {
-  // String yourJson = '{}';
-  // String? prettyString;
-  @override
-  void initState() {
-    super.initState();
-  }
+class _HistoryResponseState extends State<HistoryResponse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +44,7 @@ class _RessponseState extends State<Ressponse> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Row(
+              Row(
                 children: [
                   const Padding(
                     padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
@@ -68,9 +59,9 @@ class _RessponseState extends State<Ressponse> {
                     ),
                   ),
                   Text(
-                      '${widget.data.code}', // Dynamic
+                    '${widget.status.toString()}', // Dynamic
                     style: TextStyle(
-                      color: widget.data.code == 200 ? Colors.green : Colors.red,
+                      color: widget.status == 200 ? Colors.green : Colors.red,
                       fontSize: 20,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w400,
@@ -98,7 +89,7 @@ class _RessponseState extends State<Ressponse> {
                     borderRadius: BorderRadius.circular(8)
                 ),
                 child: Text(
-                  '${widget.data.header}',
+                  '${widget.headers.toString()}',
                   // prettyString!,
                   style: const TextStyle(
                       fontSize: 18,
@@ -123,40 +114,70 @@ class _RessponseState extends State<Ressponse> {
                 height: 300,
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8)
+                    color: Colors.grey.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8)
                 ),
                 child: SingleChildScrollView(
                   child: Text(
-                      '${widget.data.body}',
-                      // prettyString!,
+                    '${widget.data.toString()}',
+                    // prettyString!,
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: (){
-                    FirebaseFirestore.instance
-                        .collection('record')
-                        .add({
-                      'details': widget.data.body,
-                      'headers': widget.data.header,
-                      'status': widget.data.code,
-                      'url': widget.url,
-                      'method': widget.method
-                    }).then((value) => print("User Added"))
-                        .catchError((error) => print("Failed to add user: $error"));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const History(),
-                        ));
-                  },
-                  child: Text("Save"),
-              )
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    child: Text(
+                      'Url: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${widget.url.toString()}', // Dynamic
+                    style: TextStyle(
+                      color: widget.status == 200 ? Colors.green : Colors.red,
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    child: Text(
+                      'Response Method: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${widget.method.toString()}', // Dynamic
+                    style: TextStyle(
+                      color: widget.status == 200 ? Colors.green : Colors.red,
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

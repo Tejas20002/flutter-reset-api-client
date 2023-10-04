@@ -50,7 +50,7 @@ class _HistoryState extends State<History> {
                         child: Text(
                           documentData['method'],
                           style: TextStyle(
-                            color: Colors.green,
+                            color: documentData['status'] == 200 ? Colors.green : Colors.red,
                             fontSize: 15,
                           ),
                         ),
@@ -64,7 +64,7 @@ class _HistoryState extends State<History> {
                         children: <Widget>[
                           Icon(Icons.code, color: Colors.yellowAccent),
                           Text(documentData['status'].toString(),
-                              style: TextStyle(color: Colors.greenAccent))
+                              style: TextStyle(color: documentData['status'] == 200 ? Colors.green : Colors.red))
                         ],
                       ),
                       trailing: IconButton(

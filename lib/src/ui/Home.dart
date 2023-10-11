@@ -11,25 +11,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  TabController? phb;
+  late TabController phb;
   String? method;
   final TextEditingController _urlController = TextEditingController();
   TextEditingController _keys = TextEditingController();
   TextEditingController _values = TextEditingController();
   List<TextEditingController> _key = [];
   List<TextEditingController> _value = [];
+
+  // New Code
+  List<List<TextEditingController>> _controllersList = [];
   @override
   void initState() {
     super.initState();
     phb = TabController(length: 3, vsync: this);
+
+    // Initialize controllers
+    for (int i = 0; i < 3; i++) {
+      _controllersList
+          .add(List.generate(1, (index) => TextEditingController()));
+    }
   }
 
-  // Add the form field
-  _addField(){
-    setState(() {
-      _key.add(TextEditingController());
-      _value.add(TextEditingController());
-    });
+  // New Code
+  @override
+  void dispose() {
+    phb.dispose();
+
+    // Dispose controllers
+    for (var controllers in _controllersList) {
+      for (var controller in controllers) {
+        controller.dispose();
+      }
+    }
+    super.dispose();
   }
 
   // Remove the form field
@@ -51,7 +66,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         backgroundColor: Colors.orange,
         bottom: TabBar(
           controller: phb,
-          tabs: const [
+          tabs: [
             Tab(
               text: 'Params',
             ),
@@ -92,139 +107,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               controller: phb,
               children: [
                 // for(int i = 0; i < _key.length; i++)
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment:MainAxisAlignment.spaceAround,
-                      crossAxisAlignment:CrossAxisAlignment.start,
-                      mainAxisSize:MainAxisSize.max,
-                      children:[
-                        Expanded(
-                          flex: 1,
-                          child: TextField(
-                            controller: _keys,
-                            obscureText:false,
-                            textAlign:TextAlign.start,
-                            maxLines:1,
-                            style:TextStyle(
-                              fontWeight:FontWeight.w400,
-                              fontStyle:FontStyle.normal,
-                              fontSize:14,
-                              color:Color(0xff000000),
-                            ),
-                            decoration:InputDecoration(
-                              disabledBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              focusedBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              enabledBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              hintText:"Key",
-                              hintStyle:TextStyle(
-                                fontWeight:FontWeight.w400,
-                                fontStyle:FontStyle.normal,
-                                fontSize:14,
-                                color:Color(0xff000000),
-                              ),
-                              filled:true,
-                              fillColor:Color(0xfff2f2f3),
-                              isDense:false,
-                              contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: TextField(
-                            controller: _values,
-                            obscureText:false,
-                            textAlign:TextAlign.start,
-                            maxLines:1,
-                            style:TextStyle(
-                              fontWeight:FontWeight.w400,
-                              fontStyle:FontStyle.normal,
-                              fontSize:14,
-                              color:Color(0xff000000),
-                            ),
-                            decoration:InputDecoration(
-                              disabledBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              focusedBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              enabledBorder:OutlineInputBorder(
-                                borderRadius:BorderRadius.circular(4.0),
-                                borderSide:BorderSide(
-                                    color:Color(0xff000000),
-                                    width:1
-                                ),
-                              ),
-                              hintText:"Value",
-                              hintStyle:TextStyle(
-                                fontWeight:FontWeight.w400,
-                                fontStyle:FontStyle.normal,
-                                fontSize:14,
-                                color:Color(0xff000000),
-                              ),
-                              filled:true,
-                              fillColor:Color(0xfff2f2f3),
-                              isDense:false,
-                              contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                          child: IconButton(
-                            icon: Icon(Icons.delete),
-                            color: Color(0xff212435),
-                            iconSize: 24,
-                            onPressed: () {  },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                const Center(
-                  child: Text(
-                    "Header",
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
-                const Center(
-                  child: Text(
-                    "Body",
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
+                  buildTab(0, 'Params'),
+                  buildTab(1, 'Header'),
+                  buildTab(2, 'Body'),
               ],
             ),
           )
@@ -356,6 +241,151 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             fontWeight: FontWeight.bold
           ),
         ),
+      ),
+    );
+  }
+
+  // New Code
+  Widget buildTab(int tabIndex, String tabName) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _controllersList[tabIndex].length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceAround,
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    mainAxisSize:MainAxisSize.max,
+                    children:[
+                      Expanded(
+                        flex: 1,
+                        child: TextField(
+                          controller: _keys,
+                          obscureText:false,
+                          textAlign:TextAlign.start,
+                          maxLines:1,
+                          style:TextStyle(
+                            fontWeight:FontWeight.w400,
+                            fontStyle:FontStyle.normal,
+                            fontSize:14,
+                            color:Color(0xff000000),
+                          ),
+                          decoration:InputDecoration(
+                            disabledBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            focusedBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            enabledBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            hintText:"Key",
+                            hintStyle:TextStyle(
+                              fontWeight:FontWeight.w400,
+                              fontStyle:FontStyle.normal,
+                              fontSize:14,
+                              color:Color(0xff000000),
+                            ),
+                            filled:true,
+                            fillColor:Color(0xfff2f2f3),
+                            isDense:false,
+                            contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextField(
+                          controller: _values,
+                          obscureText:false,
+                          textAlign:TextAlign.start,
+                          maxLines:1,
+                          style:TextStyle(
+                            fontWeight:FontWeight.w400,
+                            fontStyle:FontStyle.normal,
+                            fontSize:14,
+                            color:Color(0xff000000),
+                          ),
+                          decoration:InputDecoration(
+                            disabledBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            focusedBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            enabledBorder:OutlineInputBorder(
+                              borderRadius:BorderRadius.circular(4.0),
+                              borderSide:BorderSide(
+                                  color:Color(0xff000000),
+                                  width:1
+                              ),
+                            ),
+                            hintText:"Value",
+                            hintStyle:TextStyle(
+                              fontWeight:FontWeight.w400,
+                              fontStyle:FontStyle.normal,
+                              fontSize:14,
+                              color:Color(0xff000000),
+                            ),
+                            filled:true,
+                            fillColor:Color(0xfff2f2f3),
+                            isDense:false,
+                            contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Color(0xff212435),
+                          iconSize: 24,
+                          onPressed: () {  },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              // Add a new text field
+              setState(() {
+                _controllersList[tabIndex].add(TextEditingController());
+              });
+            },
+            child: Text('Add ${tabName}'),
+          ),
+        ],
       ),
     );
   }

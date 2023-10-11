@@ -366,7 +366,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           icon: Icon(Icons.delete),
                           color: Color(0xff212435),
                           iconSize: 24,
-                          onPressed: () {  },
+                          onPressed: () {
+                            setState(() {
+                              _controllersList[tabIndex].removeAt(index);
+                            });
+                          },
                         ),
                       ),
                     ],

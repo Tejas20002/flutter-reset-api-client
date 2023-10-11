@@ -390,3 +390,4 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 }
+// stateFull, provider, fobx, getx, getit, bloc, rivercode, hooks

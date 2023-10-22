@@ -47,16 +47,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  // Remove the form field
-  _removeField(int i) {
-    if (_key.length > 1) {
-      setState(() {
-        _key.removeAt(i);
-        _value.removeAt(i);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,25 +69,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ],
         ),
         actions: [
-          PopupMenuButton(
-              itemBuilder: (context){
-                return [
-                  PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("History"),
-                  ),
-                ];
-              },
-              onSelected:(value){
-                if(value == 0){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => History(),
-                      ));
-                }
-              }
-          ),
+          PopupMenuButton(itemBuilder: (context) {
+            return [
+              PopupMenuItem<int>(
+                value: 0,
+                child: Text("History"),
+              ),
+            ];
+          }, onSelected: (value) {
+            if (value == 0) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => History(),
+                  ));
+            }
+          }),
         ],
       ),
       body: Column(
@@ -107,9 +94,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               controller: phb,
               children: [
                 // for(int i = 0; i < _key.length; i++)
-                  buildTab(0, 'Params'),
-                  buildTab(1, 'Header'),
-                  buildTab(2, 'Body'),
+                buildTab(0, 'Params'),
+                buildTab(1, 'Header'),
+                buildTab(2, 'Body'),
               ],
             ),
           )
@@ -121,36 +108,46 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Wrap(
             direction: Axis.horizontal,
             children: [
-              _containerButton(text: "GET", method: () {
-                setState(() {
-                  method = "GET";
-                  debugPrint(method);
-                });
-              }),
-              _containerButton(text: "POST", method: () {
-                setState(() {
-                  method = "POST";
-                  debugPrint(method);
-                });
-              }),
-              _containerButton(text: "PUT", method: () {
-                setState(() {
-                  method = "PUT";
-                  debugPrint(method);
-                });
-              }),
-              _containerButton(text: "PATCH", method: () {
-                setState(() {
-                  method = "PATCH";
-                  debugPrint(method);
-                });
-              }),
-              _containerButton(text: "DELETE", method: () {
-                setState(() {
-                  method = "DELETE";
-                });
-                debugPrint(method);
-              }),
+              _containerButton(
+                  text: "GET",
+                  method: () {
+                    setState(() {
+                      method = "GET";
+                      debugPrint(method);
+                    });
+                  }),
+              _containerButton(
+                  text: "POST",
+                  method: () {
+                    setState(() {
+                      method = "POST";
+                      debugPrint(method);
+                    });
+                  }),
+              _containerButton(
+                  text: "PUT",
+                  method: () {
+                    setState(() {
+                      method = "PUT";
+                      debugPrint(method);
+                    });
+                  }),
+              _containerButton(
+                  text: "PATCH",
+                  method: () {
+                    setState(() {
+                      method = "PATCH";
+                      debugPrint(method);
+                    });
+                  }),
+              _containerButton(
+                  text: "DELETE",
+                  method: () {
+                    setState(() {
+                      method = "DELETE";
+                    });
+                    debugPrint(method);
+                  }),
             ],
           ),
           Wrap(
@@ -167,10 +164,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
   Widget _urlTextField(BuildContext context) => Padding(
-        padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom
-        ),
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
           controller: _urlController,
           style: const TextStyle(
@@ -182,28 +179,52 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               labelText: 'URL',
               suffix: IconButton(
                   onPressed: () async {
-                    debugPrint(_urlController.text);
                     var data;
-                    // var data = await APIClient.get(_urlController.text);
-                    // debugPrint("data: ${data}");
-                    switch(method){
+                    String urlWithParams =
+                        _urlController.text + '?${_keys.text}=${_values.text}';
+
+                    for (int i = 1; i < _key.length; i++) {
+                      String key = _key[i].text.trim();
+                      String value = _value[i].text.trim();
+                      urlWithParams +=
+                          (_key.length == 0 ? '&' : '?') + '$key=$value';
+                      debugPrint("$_key");
+                    }
+                    debugPrint(urlWithParams);
+                    switch (method) {
                       case 'GET':
-                        data = await APIClient.get("${_urlController.text}?${_keys.text}=${_values.text}");
+                        data = await APIClient.get("${urlWithParams}");
                         debugPrint(method);
                         break;
                       case 'POST':
-                        data = await APIClient.post("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
+                        data = await APIClient.post(
+                            "${_urlController.text}?${_keys.text}=${_values.text}",
+                            null,
+                            null,
+                            null);
                         break;
                       case 'PUT':
-                        data = await APIClient.put("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
+                        data = await APIClient.put(
+                            "${_urlController.text}?${_keys.text}=${_values.text}",
+                            null,
+                            null,
+                            null);
                         debugPrint(method);
                         break;
                       case 'PATCH':
-                        data = await APIClient.patch("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
+                        data = await APIClient.patch(
+                            "${_urlController.text}?${_keys.text}=${_values.text}",
+                            null,
+                            null,
+                            null);
                         debugPrint(method);
                         break;
                       default:
-                        data = await APIClient.delete("${_urlController.text}?${_keys.text}=${_values.text}", null, null, null);
+                        data = await APIClient.delete(
+                            "${_urlController.text}?${_keys.text}=${_values.text}",
+                            null,
+                            null,
+                            null);
                         debugPrint(method);
                         break;
                     }
@@ -211,7 +232,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Ressponse(data: data, url: _urlController.text, method: method),
+                          builder: (context) => Ressponse(
+                              data: data,
+                              url: _urlController.text,
+                              method: method),
                         ));
                   },
                   icon: Icon(Icons.send))),
@@ -220,9 +244,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   InkWell _containerButton({String? text, required Function method}) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         method();
-        },
+      },
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -236,10 +260,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         child: Text(
           text!,
           style: const TextStyle(
-            color: Colors.orange,
-            fontSize: 12,
-            fontWeight: FontWeight.bold
-          ),
+              color: Colors.orange, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -258,56 +279,50 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment:MainAxisAlignment.spaceAround,
-                    crossAxisAlignment:CrossAxisAlignment.start,
-                    mainAxisSize:MainAxisSize.max,
-                    children:[
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
                       Expanded(
                         flex: 1,
                         child: TextField(
                           controller: _keys,
-                          obscureText:false,
-                          textAlign:TextAlign.start,
-                          maxLines:1,
-                          style:TextStyle(
-                            fontWeight:FontWeight.w400,
-                            fontStyle:FontStyle.normal,
-                            fontSize:14,
-                            color:Color(0xff000000),
+                          obscureText: false,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
                           ),
-                          decoration:InputDecoration(
-                            disabledBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                          decoration: InputDecoration(
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            focusedBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            enabledBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            hintText:"Key",
-                            hintStyle:TextStyle(
-                              fontWeight:FontWeight.w400,
-                              fontStyle:FontStyle.normal,
-                              fontSize:14,
-                              color:Color(0xff000000),
+                            hintText: "Key",
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 14,
+                              color: Color(0xff000000),
                             ),
-                            filled:true,
-                            fillColor:Color(0xfff2f2f3),
-                            isDense:false,
-                            contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            filled: true,
+                            fillColor: Color(0xfff2f2f3),
+                            isDense: false,
+                            contentPadding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                           ),
                         ),
                       ),
@@ -315,48 +330,42 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         flex: 1,
                         child: TextField(
                           controller: _values,
-                          obscureText:false,
-                          textAlign:TextAlign.start,
-                          maxLines:1,
-                          style:TextStyle(
-                            fontWeight:FontWeight.w400,
-                            fontStyle:FontStyle.normal,
-                            fontSize:14,
-                            color:Color(0xff000000),
+                          obscureText: false,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
                           ),
-                          decoration:InputDecoration(
-                            disabledBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                          decoration: InputDecoration(
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            focusedBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            enabledBorder:OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(4.0),
-                              borderSide:BorderSide(
-                                  color:Color(0xff000000),
-                                  width:1
-                              ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                              borderSide: BorderSide(
+                                  color: Color(0xff000000), width: 1),
                             ),
-                            hintText:"Value",
-                            hintStyle:TextStyle(
-                              fontWeight:FontWeight.w400,
-                              fontStyle:FontStyle.normal,
-                              fontSize:14,
-                              color:Color(0xff000000),
+                            hintText: "Value",
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 14,
+                              color: Color(0xff000000),
                             ),
-                            filled:true,
-                            fillColor:Color(0xfff2f2f3),
-                            isDense:false,
-                            contentPadding:EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            filled: true,
+                            fillColor: Color(0xfff2f2f3),
+                            isDense: false,
+                            contentPadding: EdgeInsets.fromLTRB(12, 8, 12, 8),
                           ),
                         ),
                       ),

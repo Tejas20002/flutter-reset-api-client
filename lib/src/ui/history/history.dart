@@ -12,7 +12,7 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('record').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +21,7 @@ class _HistoryState extends State<History> {
         backgroundColor: Colors.orange,
       ),
       body: StreamBuilder(
-        stream: _firestore.collection('record').snapshots(),
+        stream: _usersStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
@@ -29,7 +29,7 @@ class _HistoryState extends State<History> {
           var documents = snapshot.data?.docs;
           List<Widget> data = [];
           for (var document in documents!) {
-            var documentData = document.data();
+            dynamic documentData = document.data();
             data.add(
               Card(
                 elevation: 8.0,
@@ -48,7 +48,7 @@ class _HistoryState extends State<History> {
                           ),
                         ),
                         child: Text(
-                          documentData['method'],
+                          documentData!["method"],
                           style: TextStyle(
                             color: documentData['status'] == 200 ? Colors.green : Colors.red,
                             fontSize: 15,
@@ -64,7 +64,7 @@ class _HistoryState extends State<History> {
                         children: <Widget>[
                           Icon(Icons.code, color: Colors.yellowAccent),
                           Text(documentData['status'].toString(),
-                              style: TextStyle(color: documentData['status'] == 200 ? Colors.green : Colors.red))
+                              style: TextStyle(color: documentData['status']! == 200 ? Colors.green : Colors.red))
                         ],
                       ),
                       trailing: IconButton(

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "584697060156",
-    "project_id": "ngo-smvm",
-    "storage_bucket": "ngo-smvm.appspot.com"
+    "project_number": "413276845463",
+    "project_id": "rest-api-client-5926e",
+    "storage_bucket": "rest-api-client-5926e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:584697060156:android:8d4e3345bdd254ec4d5c39",
+        "mobilesdk_app_id": "1:413276845463:android:75ea009dc5f3f916ca80d2",
         "android_client_info": {
           "package_name": "com.example.pope"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCBikrItnYgVJW113iFZs-yERqgxM_DPUI"
+          "current_key": "AIzaSyCwK9oxx6s_ef8-jImVhdVxM1W_JE8B4Ew"
         }
       ],
       "services": {
